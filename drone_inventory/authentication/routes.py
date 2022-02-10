@@ -20,12 +20,17 @@ def signup():
             print(email,password)
 
             # Add User into Database
-            user = User(email, password = password)
-            db.session.add(user)
-            db.session.commit()
+            test = User.query.filter(User.email == email).first()
+            if email == test.email:
+                print(email, 'is already here')
+                flash(f'{email} already has an account with us. Try logging in.', 'auth-failed')
+                return redirect(url_for('auth.signin'))
+            else:
+                user = User(email,password = password)
+                db.session.add(user)
+                db.session.commit()
 
-            flash(f'You have successfully created a user account for {email}.','user-created')
-            return redirect(url_for('auth.signin'))
+                flash(f'You have successfully created a user account for {email}.', "user-created")
 
     except:
         raise Exception('Invalid Form Data: Please check your form.')
