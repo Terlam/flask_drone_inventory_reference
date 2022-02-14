@@ -20,8 +20,8 @@ def signup():
             print(email,password)
 
             # Add User into Database
-            test = User.query.filter(User.email == email).first()
-            if email == test.email:
+            previous_user = User.query.filter(User.email == email).first()
+            if previous_user:
                 print(email, 'is already here')
                 flash(f'{email} already has an account with us. Try logging in.', 'auth-failed')
                 return redirect(url_for('auth.signin'))
